@@ -1,0 +1,2 @@
+/usr/bin/ar qc libEOMlib.a  CMakeFiles/EOMlib.dir/lib/EOM.cpp.o CMakeFiles/EOMlib.dir/lib/FGColumnVector3.cpp.o
+/usr/bin/ranlib libEOMlib.a

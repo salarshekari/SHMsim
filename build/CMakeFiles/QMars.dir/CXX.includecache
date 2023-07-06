@@ -1,0 +1,30 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/sali/master_thesis/simulations/quad_mars/inc/EOM.h
+memory
+-
+deque
+-
+vector
+-
+FGColumnVector3.h
+/home/sali/master_thesis/simulations/quad_mars/inc/FGColumnVector3.h
+
+/home/sali/master_thesis/simulations/quad_mars/inc/FGColumnVector3.h
+iosfwd
+-
+string
+-
+
+/home/sali/master_thesis/simulations/quad_mars/main.cpp
+iostream
+-
+inc/EOM.h
+/home/sali/master_thesis/simulations/quad_mars/inc/EOM.h
+
