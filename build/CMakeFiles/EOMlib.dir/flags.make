@@ -6,5 +6,5 @@ CXX_FLAGS =
 
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/sali/master_thesis/simulations/quad_mars/inc 
+CXX_INCLUDES = -I/home/sali/master_thesis/simulations/SMsim/inc 
 

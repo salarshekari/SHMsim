@@ -50,12 +50,15 @@ EOM::~EOM()
     std::cout << "\ndestructor was called";
 }
 
-void EOM::doTrime(std::vector<double> Om, double setPoint)
+void EOM::doTrime(std::vector<double> &Om, double setPoint)
 {
+  
     while(1)
     {
-      if(getDownAccel() < 0)
+      
+      while((vStates.XYZ_dot_dot(3) < 0))//2.52841e-06))//3.52841e-06))
       {
+        
       Omega1 += 0.001;
       Omega2 += 0.001;
       Omega3 += 0.001;
@@ -66,16 +69,16 @@ void EOM::doTrime(std::vector<double> Om, double setPoint)
       Om[2] = Omega3;
       Om[3] = Omega4;
 
-      setMotorSpeed_rad_per_second(Om);
-      CalculateUVWdot();
+      // setMotorSpeed_rad_per_second(Om);
+      // CalculateUVWdot();
 
-      // Run(0.01);
-      std::cout << "\ndown accel is : " << getDownAccel() << "\n";
+      Run(0.01);
+      std::cout << "\ndown accel is : " << vStates.XYZ_dot_dot(3) << "\n";
       
       }
-
-      else if(getDownAccel() > 0)
+      while(vStates.XYZ_dot_dot(3) > 0)//2.52841e-06)
       {
+      
         
       Omega1 -= 0.001;
       Omega2 -= 0.001;
@@ -87,16 +90,23 @@ void EOM::doTrime(std::vector<double> Om, double setPoint)
       Om[2] = Omega3;
       Om[3] = Omega4;
 
-      setMotorSpeed_rad_per_second(Om);
-      CalculateUVWdot();
 
-      // Run(0.01);
+      setMotorSpeed_rad_per_second(Om);
+      // CalculateUVWdot();
+
+      std::cout << "\nKoose nanat\n";
+
+      Run(0.01);
+      break;
       
       
       }
-      else if(getDownAccel() == 0)
-      {
-        
+
+      Omega1 += 0.001;
+      Omega2 += 0.001;
+      Omega3 += 0.001;
+      Omega4 += 0.001;
+
       Om[0] = Omega1;
       Om[1] = Omega2;
       Om[2] = Omega3;
@@ -104,10 +114,12 @@ void EOM::doTrime(std::vector<double> Om, double setPoint)
 
       setMotorSpeed_rad_per_second(Om);
 
-      // Run(0.01);
+      Run(0.01);
+
       break;
-      
-      }
+
+      setMotorSpeed_rad_per_second(Om);
+      CalculateUVWdot();
 
       std::cout << "\nOmega1 in loop is : " << Omega1 << "\n";
       // std::cout << "\nHeight is : " << vStates.XYZ(3) << "\n";
@@ -133,6 +145,11 @@ void EOM::pos_init(double phi_0, double theta_0, double psi_0, double X0, double
     vStates.XYZ(1) = X0;
     vStates.XYZ(2) = Y0;
     vStates.XYZ(3) = Z0;
+
+    Omega1 = 879.9;
+  Omega2 = 879.9;
+  Omega3 = 879.9;
+  Omega4 = 879.9;
 }
 
 void EOM::rate_init(double phi_dot_0, double theta_dot_0, double psi_dot_0, double udot_0, double vdot_0, double wdot_0)

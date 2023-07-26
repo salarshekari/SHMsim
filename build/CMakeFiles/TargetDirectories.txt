@@ -1,4 +1,4 @@
-/home/sali/master_thesis/simulations/quad_mars/build/CMakeFiles/edit_cache.dir
-/home/sali/master_thesis/simulations/quad_mars/build/CMakeFiles/rebuild_cache.dir
-/home/sali/master_thesis/simulations/quad_mars/build/CMakeFiles/QMars.dir
-/home/sali/master_thesis/simulations/quad_mars/build/CMakeFiles/EOMlib.dir
+/home/sali/master_thesis/simulations/SMsim/build/CMakeFiles/edit_cache.dir
+/home/sali/master_thesis/simulations/SMsim/build/CMakeFiles/rebuild_cache.dir
+/home/sali/master_thesis/simulations/SMsim/build/CMakeFiles/QMars.dir
+/home/sali/master_thesis/simulations/SMsim/build/CMakeFiles/EOMlib.dir

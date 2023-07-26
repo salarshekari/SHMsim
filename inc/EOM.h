@@ -97,7 +97,7 @@ class EOM
     void CalculatePQRdot(void);
     void UpdatePhi_Theta_Psi(void);
     void setMotorSpeed_rad_per_second(std::vector<double> Om);
-    void doTrime(std::vector<double> Om, double );
+    void doTrime(std::vector<double> &Om, double );
     
 
     JSBSim::FGColumnVector3 getXYZ() {return vStates.XYZ;}

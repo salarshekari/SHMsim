@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/sali/master_thesis/simulations/quad_mars
+CMAKE_SOURCE_DIR = /home/sali/master_thesis/simulations/SMsim
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/sali/master_thesis/simulations/quad_mars/build
+CMAKE_BINARY_DIR = /home/sali/master_thesis/simulations/SMsim/build
 
 # Include any dependencies generated for this target.
 include CMakeFiles/EOMlib.dir/depend.make
@@ -59,29 +59,29 @@ include CMakeFiles/EOMlib.dir/flags.make
 
 CMakeFiles/EOMlib.dir/lib/EOM.cpp.o: CMakeFiles/EOMlib.dir/flags.make
 CMakeFiles/EOMlib.dir/lib/EOM.cpp.o: ../lib/EOM.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/sali/master_thesis/simulations/quad_mars/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/EOMlib.dir/lib/EOM.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/EOMlib.dir/lib/EOM.cpp.o -c /home/sali/master_thesis/simulations/quad_mars/lib/EOM.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/sali/master_thesis/simulations/SMsim/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/EOMlib.dir/lib/EOM.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/EOMlib.dir/lib/EOM.cpp.o -c /home/sali/master_thesis/simulations/SMsim/lib/EOM.cpp
 
 CMakeFiles/EOMlib.dir/lib/EOM.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/EOMlib.dir/lib/EOM.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/sali/master_thesis/simulations/quad_mars/lib/EOM.cpp > CMakeFiles/EOMlib.dir/lib/EOM.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/sali/master_thesis/simulations/SMsim/lib/EOM.cpp > CMakeFiles/EOMlib.dir/lib/EOM.cpp.i
 
 CMakeFiles/EOMlib.dir/lib/EOM.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/EOMlib.dir/lib/EOM.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/sali/master_thesis/simulations/quad_mars/lib/EOM.cpp -o CMakeFiles/EOMlib.dir/lib/EOM.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/sali/master_thesis/simulations/SMsim/lib/EOM.cpp -o CMakeFiles/EOMlib.dir/lib/EOM.cpp.s
 
 CMakeFiles/EOMlib.dir/lib/FGColumnVector3.cpp.o: CMakeFiles/EOMlib.dir/flags.make
 CMakeFiles/EOMlib.dir/lib/FGColumnVector3.cpp.o: ../lib/FGColumnVector3.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/sali/master_thesis/simulations/quad_mars/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/EOMlib.dir/lib/FGColumnVector3.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/EOMlib.dir/lib/FGColumnVector3.cpp.o -c /home/sali/master_thesis/simulations/quad_mars/lib/FGColumnVector3.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/sali/master_thesis/simulations/SMsim/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/EOMlib.dir/lib/FGColumnVector3.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/EOMlib.dir/lib/FGColumnVector3.cpp.o -c /home/sali/master_thesis/simulations/SMsim/lib/FGColumnVector3.cpp
 
 CMakeFiles/EOMlib.dir/lib/FGColumnVector3.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/EOMlib.dir/lib/FGColumnVector3.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/sali/master_thesis/simulations/quad_mars/lib/FGColumnVector3.cpp > CMakeFiles/EOMlib.dir/lib/FGColumnVector3.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/sali/master_thesis/simulations/SMsim/lib/FGColumnVector3.cpp > CMakeFiles/EOMlib.dir/lib/FGColumnVector3.cpp.i
 
 CMakeFiles/EOMlib.dir/lib/FGColumnVector3.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/EOMlib.dir/lib/FGColumnVector3.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/sali/master_thesis/simulations/quad_mars/lib/FGColumnVector3.cpp -o CMakeFiles/EOMlib.dir/lib/FGColumnVector3.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/sali/master_thesis/simulations/SMsim/lib/FGColumnVector3.cpp -o CMakeFiles/EOMlib.dir/lib/FGColumnVector3.cpp.s
 
 # Object files for target EOMlib
 EOMlib_OBJECTS = \
@@ -95,7 +95,7 @@ libEOMlib.a: CMakeFiles/EOMlib.dir/lib/EOM.cpp.o
 libEOMlib.a: CMakeFiles/EOMlib.dir/lib/FGColumnVector3.cpp.o
 libEOMlib.a: CMakeFiles/EOMlib.dir/build.make
 libEOMlib.a: CMakeFiles/EOMlib.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/sali/master_thesis/simulations/quad_mars/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX static library libEOMlib.a"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/sali/master_thesis/simulations/SMsim/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX static library libEOMlib.a"
 	$(CMAKE_COMMAND) -P CMakeFiles/EOMlib.dir/cmake_clean_target.cmake
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/EOMlib.dir/link.txt --verbose=$(VERBOSE)
 
@@ -109,6 +109,6 @@ CMakeFiles/EOMlib.dir/clean:
 .PHONY : CMakeFiles/EOMlib.dir/clean
 
 CMakeFiles/EOMlib.dir/depend:
-	cd /home/sali/master_thesis/simulations/quad_mars/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/sali/master_thesis/simulations/quad_mars /home/sali/master_thesis/simulations/quad_mars /home/sali/master_thesis/simulations/quad_mars/build /home/sali/master_thesis/simulations/quad_mars/build /home/sali/master_thesis/simulations/quad_mars/build/CMakeFiles/EOMlib.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/sali/master_thesis/simulations/SMsim/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/sali/master_thesis/simulations/SMsim /home/sali/master_thesis/simulations/SMsim /home/sali/master_thesis/simulations/SMsim/build /home/sali/master_thesis/simulations/SMsim/build /home/sali/master_thesis/simulations/SMsim/build/CMakeFiles/EOMlib.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/EOMlib.dir/depend
 

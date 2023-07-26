@@ -4,8 +4,8 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/sali/master_thesis/simulations/quad_mars/lib/EOM.cpp" "/home/sali/master_thesis/simulations/quad_mars/build/CMakeFiles/EOMlib.dir/lib/EOM.cpp.o"
-  "/home/sali/master_thesis/simulations/quad_mars/lib/FGColumnVector3.cpp" "/home/sali/master_thesis/simulations/quad_mars/build/CMakeFiles/EOMlib.dir/lib/FGColumnVector3.cpp.o"
+  "/home/sali/master_thesis/simulations/SMsim/lib/EOM.cpp" "/home/sali/master_thesis/simulations/SMsim/build/CMakeFiles/EOMlib.dir/lib/EOM.cpp.o"
+  "/home/sali/master_thesis/simulations/SMsim/lib/FGColumnVector3.cpp" "/home/sali/master_thesis/simulations/SMsim/build/CMakeFiles/EOMlib.dir/lib/FGColumnVector3.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
