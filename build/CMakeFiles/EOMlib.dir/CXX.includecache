@@ -22,9 +22,9 @@ iosfwd
 string
 -
 
-/home/sali/master_thesis/simulations/SMsim/lib/EOM.cpp
+/home/sali/master_thesis/simulations/SHMsim/lib/EOM.cpp
 EOM.h
-/home/sali/master_thesis/simulations/SMsim/lib/EOM.h
+/home/sali/master_thesis/simulations/SHMsim/lib/EOM.h
 iostream
 -
 cmath

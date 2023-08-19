@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/sali/master_thesis/simulations/SMsim/main.cpp" "/home/sali/master_thesis/simulations/SMsim/build/CMakeFiles/QMars.dir/main.cpp.o"
+  "/home/sali/master_thesis/simulations/SHMsim/main.cpp" "/home/sali/master_thesis/simulations/SHMsim/build/CMakeFiles/QMars.dir/main.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
@@ -15,7 +15,7 @@ set(CMAKE_CXX_TARGET_INCLUDE_PATH
 
 # Targets to which this target links.
 set(CMAKE_TARGET_LINKED_INFO_FILES
-  "/home/sali/master_thesis/simulations/SMsim/build/CMakeFiles/EOMlib.dir/DependInfo.cmake"
+  "/home/sali/master_thesis/simulations/SHMsim/build/CMakeFiles/EOMlib.dir/DependInfo.cmake"
   )
 
 # Fortran module output directory.

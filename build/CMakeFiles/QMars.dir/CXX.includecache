@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/home/sali/master_thesis/simulations/SMsim/inc/EOM.h
+/home/sali/master_thesis/simulations/SHMsim/inc/EOM.h
 memory
 -
 deque
@@ -14,17 +14,19 @@ deque
 vector
 -
 FGColumnVector3.h
-/home/sali/master_thesis/simulations/SMsim/inc/FGColumnVector3.h
+/home/sali/master_thesis/simulations/SHMsim/inc/FGColumnVector3.h
 
-/home/sali/master_thesis/simulations/SMsim/inc/FGColumnVector3.h
+/home/sali/master_thesis/simulations/SHMsim/inc/FGColumnVector3.h
 iosfwd
 -
 string
 -
 
-/home/sali/master_thesis/simulations/SMsim/main.cpp
+/home/sali/master_thesis/simulations/SHMsim/main.cpp
 iostream
 -
 inc/EOM.h
-/home/sali/master_thesis/simulations/SMsim/inc/EOM.h
+/home/sali/master_thesis/simulations/SHMsim/inc/EOM.h
+fstream
+-
 

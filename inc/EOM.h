@@ -10,6 +10,7 @@ Date started: Unknown
 #define EOM_H
 
 #define rad2deg (180.0/3.141592653589793238)
+#define Pi 3.141592653589793238462643383279502884197
 
 #include <memory>
 #include <deque>
@@ -87,7 +88,7 @@ class EOM
     enum eIntegrateType {eNone = 0, eRectEuler, eTrapezoidal, eAdamsBashforth2,
                        eAdamsBashforth3, eAdamsBashforth4, eBuss1, eBuss2, eLocalLinearization, eAdamsBashforth5};
 
-    EOM(double _mass, double _arm_len, double _Ix, double _Iy, double _Iz, double _Jr, double _Ct, double _Cm);
+    EOM(double _mass, double _arm_len, double _Ix, double _Iy, double _Iz, double _Jr, double _Ct, double _Cm, double R_b, double rho);
     ~EOM();
 
     void pos_init(double phi_0, double theta_0, double psi_0, double X0, double Y0, double Z0);
@@ -98,11 +99,30 @@ class EOM
     void UpdatePhi_Theta_Psi(void);
     void setMotorSpeed_rad_per_second(std::vector<double> Om);
     void doTrime(std::vector<double> &Om, double );
+
+    void PitchControl(double pitch_setpoint, double dt, double pitch_current_state, double pitch_last_state, double alt_pid);
+    void RollControl(double roll_setpoint, double dt, double roll_current_state, double roll_last_state, double alt_pid);
+    double AltControl(double alt_setpoint, double dt, double alt_current_state, double alt_last_state);
+    void YawControl(double yaw_setpoint, double dt, double psi_current_state, double psi_last_state, double alt_pid);
+
+    void set_alt_gain(double _Kp_Alt, double _Ki_Alt, double _Kd_Alt)
+    {Kp_Alt = _Kp_Alt; Ki_Alt = _Ki_Alt; Kd_Alt = _Kd_Alt;}
+
+    void set_pitch_gain(double _Kp_Theta, double _Ki_Theta, double _Kd_Theta)
+    {Kp_Theta = _Kp_Theta; Ki_Theta = _Ki_Theta; Kd_Theta = _Kd_Theta;}
+
+    void set_roll_gain(double _Kp_Phi, double _Ki_Phi, double _Kd_Phi)
+    {Kp_Phi = _Kp_Phi; Ki_Phi = _Ki_Phi; Kd_Phi = _Kd_Phi;}
+
+    void set_yaw_gain(double _Kp_Psi, double _Ki_Psi, double _Kd_Psi)
+    {Kp_Psi = _Kp_Psi; Ki_Psi = _Ki_Psi; Kd_Psi = _Kd_Psi;}
     
 
     JSBSim::FGColumnVector3 getXYZ() {return vStates.XYZ;}
     JSBSim::FGColumnVector3 getPhi_Theta_Psi_rad() {return vStates.phi_theta_psi;}
     JSBSim::FGColumnVector3 getPhi_Theta_Psi_deg() {return vStates.phi_theta_psi_deg;}
+
+    double getSimTime() {return sim_time;}
 
     double getX() {return vStates.XYZ(1);}
     double getY() {return vStates.XYZ(2);}
@@ -122,7 +142,17 @@ class EOM
     VehicleStates vStates;
     VehicleParameters vParams;
 
+    double Trim_RPM;
+    double Offset;
+
+    double sim_time;
+
     double g;
+    double DiskArea;
+    double BladeRadius;
+
+    double current_i_err;
+    double last_i_err;
 
     eIntegrateType integrator_rotational_rate;
     eIntegrateType integrator_translational_rate;
@@ -148,6 +178,22 @@ class EOM
     double Omega2;
     double Omega3;
     double Omega4;
+
+    double Kp_Phi;
+    double Ki_Phi;
+    double Kd_Phi;
+
+    double Kp_Theta;
+    double Ki_Theta;
+    double Kd_Theta;
+
+    double Kp_Psi;
+    double Ki_Psi;
+    double Kd_Psi;
+
+    double Kp_Alt;
+    double Ki_Alt;
+    double Kd_Alt;
 
     void Integrate( JSBSim::FGColumnVector3& Integrand,
                   JSBSim::FGColumnVector3& Val,

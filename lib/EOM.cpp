@@ -16,8 +16,11 @@ using namespace JSBSim;
 using namespace std;
 
 
-EOM::EOM(double _mass, double _arm_len, double _Ix, double _Iy, double _Iz, double _Jr, double _Ct, double _Cm)
+EOM::EOM(double _mass, double _arm_len, double _Ix, double _Iy, double _Iz, double _Jr, double _Ct, double _Cm, double R_b, double rho)
 {
+
+    sim_time = 0.0;
+
     vParams.mass = _mass;
     vParams.arm_len = _arm_len;
     vParams.Ix = _Ix;
@@ -25,10 +28,17 @@ EOM::EOM(double _mass, double _arm_len, double _Ix, double _Iy, double _Iz, doub
     vParams.Iz = _Iz;
     vParams.Jr = _Jr;
 
-    vParams.Ct = _Ct;
-    vParams.Cm = _Cm;
+    BladeRadius = R_b;
 
-    g = 9.81;
+    DiskArea = (Pi * BladeRadius * BladeRadius);
+
+    vParams.Ct = (rho * DiskArea * BladeRadius * BladeRadius * _Ct);
+    vParams.Cm = (rho * DiskArea * BladeRadius * BladeRadius * BladeRadius *_Cm);
+
+    // vParams.Ct = _Ct;
+    // vParams.Cm = _Cm;
+
+    g = 9.81 * 0.4;
 
     integrator_rotational_rate = eRectEuler;
     integrator_translational_rate = eAdamsBashforth2;
@@ -42,6 +52,10 @@ EOM::EOM(double _mass, double _arm_len, double _Ix, double _Iy, double _Iz, doub
 
 
     UpdatePhi_Theta_Psi();    
+
+
+    Trim_RPM = 1812.49;
+    Offset = 3.0;
 }
 
 
@@ -94,8 +108,6 @@ void EOM::doTrime(std::vector<double> &Om, double setPoint)
       setMotorSpeed_rad_per_second(Om);
       // CalculateUVWdot();
 
-      std::cout << "\nKoose nanat\n";
-
       Run(0.01);
       break;
       
@@ -146,10 +158,10 @@ void EOM::pos_init(double phi_0, double theta_0, double psi_0, double X0, double
     vStates.XYZ(2) = Y0;
     vStates.XYZ(3) = Z0;
 
-    Omega1 = 879.9;
-  Omega2 = 879.9;
-  Omega3 = 879.9;
-  Omega4 = 879.9;
+  Omega1 = 0.0;   //879.9;
+  Omega2 = 0.0;   //879.9;
+  Omega3 = 0.0;   //879.9;
+  Omega4 = 0.0;   //879.9;
 }
 
 void EOM::rate_init(double phi_dot_0, double theta_dot_0, double psi_dot_0, double udot_0, double vdot_0, double wdot_0)
@@ -170,14 +182,26 @@ void EOM::Run(double dt)
 
   CalculatePQRdot();
 
+  sim_time = sim_time + dt;
+
+  if (vStates.XYZ(3) >= 0 )
+  {
+    Integrate(vStates.phi_theta_psi_dot,   vStates.phi_theta_psi_dot_dot,   vStates.dq_phi_theta_psi_dot_dot,    dt,   integrator_rotational_rate);
+
+    Integrate(vStates.phi_theta_psi,   vStates.phi_theta_psi_dot,   vStates.dq_phi_theta_psi_dot,   dt,   integrator_rotational_position);
+
+    Integrate(vStates.XYZ_dot,   vStates.XYZ_dot_dot,   vStates.dq_XYZ_dot_dot,   dt,   integrator_translational_rate);
+
+    Integrate(vStates.XYZ,   vStates.XYZ_dot,   vStates.dq_XYZ_dot,   dt,   integrator_translational_position);
+  }
+  else
+  {
+    vStates.XYZ(3) = 0.0;
+    // double e = 0.0;
+  }
+
   
-  Integrate(vStates.phi_theta_psi_dot,   vStates.phi_theta_psi_dot_dot,   vStates.dq_phi_theta_psi_dot_dot,    dt,   integrator_rotational_rate);
-
-  Integrate(vStates.phi_theta_psi,   vStates.phi_theta_psi_dot,   vStates.dq_phi_theta_psi_dot,   dt,   integrator_rotational_position);
-
-  Integrate(vStates.XYZ_dot,   vStates.XYZ_dot_dot,   vStates.dq_XYZ_dot_dot,   dt,   integrator_translational_rate);
-
-  Integrate(vStates.XYZ,   vStates.XYZ_dot,   vStates.dq_XYZ_dot,   dt,   integrator_translational_position);
+  
 
   
 }
@@ -267,3 +291,128 @@ void EOM::Integrate( FGColumnVector3& Integrand,
     break;
   }
 }
+
+double EOM::AltControl(double alt_setpoint, double dt, double alt_current_state, double alt_last_state)
+{
+  double alt_p_err = (alt_setpoint - vStates.XYZ(3));
+  double alt_d_err = alt_current_state - alt_last_state;
+  current_i_err = alt_p_err;
+
+  double alt_i_err =+  (current_i_err - last_i_err)*dt;
+  
+
+  // std::cout << "\nP Error is : " << alt_p_err << "\n";
+  // std::cout << "\nD Error is : " << alt_d_err/dt << "\n";
+
+  double PID = (Kp_Alt*alt_p_err - Kd_Alt*(alt_d_err/dt) + Ki_Alt*alt_i_err);
+
+  Omega1 = Omega1 + PID;
+  if (Omega1 < (Trim_RPM-Offset)) Omega1 = (Trim_RPM-Offset);
+  if (Omega1 > (Trim_RPM+Offset)) Omega1 = (Trim_RPM+Offset);  
+  Omega2 = Omega2 + PID;
+  if (Omega2 < (Trim_RPM-Offset)) Omega2 = (Trim_RPM-Offset);
+  if (Omega2 > (Trim_RPM+Offset)) Omega2 = (Trim_RPM+Offset);
+  Omega3 = Omega3 + PID;
+  if (Omega3 < (Trim_RPM-Offset)) Omega3 = (Trim_RPM-Offset);
+  if (Omega3 > (Trim_RPM+Offset)) Omega3 = (Trim_RPM+Offset);
+  Omega4 = Omega4 + PID;
+  if (Omega4 < (Trim_RPM-Offset)) Omega4 = (Trim_RPM-Offset);
+  if (Omega4 > (Trim_RPM+Offset)) Omega4 = (Trim_RPM+Offset);
+
+  last_i_err = current_i_err;
+
+  return PID;
+
+  // std::cout << "\nPID is : " << PID << "\n";
+  // std::cout << "\nOmega1 is : " << Omega1 << "\n";
+  // std::cout << "\nOmega2 is : " << Omega2 << "\n";
+  // std::cout << "\nZ is : " <<  vStates.XYZ(3) << "\n";
+}
+
+void EOM::PitchControl(double pitch_setpoint, double dt, double pitch_current_state, double pitch_last_state, double alt_pid)
+{
+  double pitch_p_err = (pitch_setpoint - vStates.phi_theta_psi_deg(2));
+  double pitch_d_err = pitch_current_state - pitch_last_state;
+
+  double PID_Theta = (Kp_Theta*pitch_p_err - Kd_Theta*(pitch_d_err/dt));// + Ki_Alt*_i_err);
+
+  // std::cout << "\nP Error is : " << pitch_p_err << "\n";
+  // std::cout << "\nD Error is : " << pitch_d_err/dt << "\n";
+
+
+  Omega1 = Omega1 + PID_Theta + alt_pid;
+  if (Omega1 < (Trim_RPM-Offset)) Omega1 = (Trim_RPM-Offset);
+  if (Omega1 > (Trim_RPM+Offset)) Omega1 = (Trim_RPM+Offset);  
+
+  Omega2 = Omega2 + PID_Theta + alt_pid;
+  if (Omega2 < (Trim_RPM-Offset)) Omega2 = (Trim_RPM-Offset);
+  if (Omega2 > (Trim_RPM+Offset)) Omega2 = (Trim_RPM+Offset);
+
+
+  Omega3 = Omega3 - PID_Theta + alt_pid;
+  if (Omega3 < (Trim_RPM-Offset)) Omega3 = (Trim_RPM-Offset);
+  if (Omega3 > (Trim_RPM+Offset)) Omega3 = (Trim_RPM+Offset);
+
+  Omega4 = Omega4 - PID_Theta + alt_pid;
+  if (Omega4 < (Trim_RPM-Offset)) Omega4 = (Trim_RPM-Offset);
+  if (Omega4 > (Trim_RPM+Offset)) Omega4 = (Trim_RPM+Offset);
+
+  // std::cout << "\nPID is : " << PID_Theta << "\n";
+  // std::cout << "\nOmega1 is : " << Omega1 << "\n";
+  // std::cout << "\nOmega2 is : " << Omega2 << "\n";
+  // std::cout << "\nZ is : " <<  vStates.XYZ(3) << "\n";
+
+}
+
+void EOM::RollControl(double roll_setpoint, double dt, double roll_current_state, double roll_last_state, double alt_pid)
+{
+  double roll_p_err = (roll_setpoint - vStates.phi_theta_psi_deg(1));
+  double roll_d_err = (roll_current_state - roll_last_state);
+
+  double PID_Roll = (Kp_Phi*roll_p_err - Kd_Phi*(roll_d_err/dt));
+
+  Omega2 = Omega2 + PID_Roll + alt_pid;
+  if (Omega2 < (Trim_RPM-Offset)) Omega2 = (Trim_RPM-Offset);
+  if (Omega2 > (Trim_RPM+Offset)) Omega2 = (Trim_RPM+Offset);
+  Omega3 = Omega3 + PID_Roll + alt_pid;
+  if (Omega3 < (Trim_RPM-Offset)) Omega3 = (Trim_RPM-Offset);
+  if (Omega3 > (Trim_RPM+Offset)) Omega3 = (Trim_RPM+Offset);
+
+  Omega1 = Omega1 - PID_Roll + alt_pid;
+  if (Omega1 < (Trim_RPM-Offset)) Omega1 = (Trim_RPM-Offset);
+  if (Omega1 > (Trim_RPM+Offset)) Omega1 = (Trim_RPM+Offset); 
+  Omega4 = Omega4 - PID_Roll + alt_pid;
+  if (Omega4 < (Trim_RPM-Offset)) Omega4 = (Trim_RPM-Offset);
+  if (Omega4 > (Trim_RPM+Offset)) Omega4 = (Trim_RPM+Offset);
+}
+
+void EOM::YawControl(double yaw_setpoint, double dt, double psi_current_state, double psi_last_state, double alt_pid)
+{
+  double psi_p_err = (yaw_setpoint - vStates.phi_theta_psi_deg(3));
+  double psi_d_err = psi_current_state - psi_last_state;
+
+  double PID_Psi = (Kp_Psi*psi_p_err - Kd_Psi*(psi_d_err/dt));
+
+  // std::cout << "\n Yaw Setpoint is : " << yaw_setpoint << "\n";
+  // std::cout << "\nP Error is : " << psi_p_err << "\n";
+  // std::cout << "\nD Error is : " << psi_d_err/dt << "\n";
+
+  Omega1 = Omega1 - PID_Psi + alt_pid;
+  if (Omega1 < (Trim_RPM-Offset)) Omega1 = (Trim_RPM-Offset);
+  if (Omega1 > (Trim_RPM+Offset)) Omega1 = (Trim_RPM+Offset); 
+  Omega3 = Omega3 - PID_Psi + alt_pid;
+  if (Omega3 < (Trim_RPM-Offset)) Omega3 = (Trim_RPM-Offset);
+  if (Omega3 > (Trim_RPM+Offset)) Omega3 = (Trim_RPM+Offset);
+
+  Omega2 = Omega2 + PID_Psi + alt_pid;
+  if (Omega2 < (Trim_RPM-Offset)) Omega2 = (Trim_RPM-Offset);
+  if (Omega2 > (Trim_RPM+Offset)) Omega2 = (Trim_RPM+Offset);
+  Omega4 = Omega4 + PID_Psi + alt_pid;
+  if (Omega4 < (Trim_RPM-Offset)) Omega4 = (Trim_RPM-Offset);
+  if (Omega4 > (Trim_RPM+Offset)) Omega4 = (Trim_RPM+Offset);
+
+  // std::cout << "\nPID is : " << PID_Psi << "\n";
+  // std::cout << "\nOmega1 is : " << Omega1 << "\n";
+  // std::cout << "\nOmega2 is : " << Omega2 << "\n";
+}
+
